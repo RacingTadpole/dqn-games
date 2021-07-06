@@ -1,0 +1,16 @@
+.DS_Store
+.idea/
+__pycache__/
+.pytest_cache/
+dist/
+.cache/
+.mypy_cache/
+*.egg-info/
+.hypothesis/
+*.pyc
+htmlcov/
+.coverage
+site/
+.vscode/
+.ipynb_checkpoints/
+data/
