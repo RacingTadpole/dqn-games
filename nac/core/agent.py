@@ -28,7 +28,6 @@ def get_dqn_agent(env: Env) -> Agent:
     model = Sequential([
         Flatten(input_shape=(1,) + env.observation_space.shape),
         Dense(27, activation='relu'),
-        # Dense(27, activation='relu'),
         Dense(nb_actions, activation='linear'),
     ])
 
@@ -46,12 +45,12 @@ def get_dqn_agent(env: Env) -> Agent:
     return dqn
 
 
-def train_agent(env: Env, agent: Agent, steps: int = 10000) -> Agent:
+def train_agent(env: Env, agent: Agent, steps: int = 5000) -> Agent:
     agent.fit(env, nb_steps=steps, visualize=False, verbose=1)
     return agent
 
 
-def train_against(trainee: Agent, trainee_env: Type[Env], opponent: Agent, steps: int = 10000) -> Env:
+def train_against(trainee: Agent, trainee_env: Type[Env], opponent: Agent, steps: int = 5000) -> Env:
     opponent.training = True  # So that it still takes random choices occasionally when played against.
     env = trainee_env(get_opponent_action=lambda board: opponent.forward(opponent.processor.process_observation(board)))
     train_agent(env, trainee, steps)
