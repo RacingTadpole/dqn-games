@@ -1,8 +1,24 @@
-# Noughts and Crosses with reinforcement learning using gym and keras-rl
+# Tic-tac-toe (aka. noughts and crosses)
+With Deep Q (DQN) reinforcement learning using gym and keras-rl
 
 ## Pre-requisites
 
-Because I'm using an M1 Mac, I can't set this up using pipenv. So you're on your own re requirements.
+Because I'm using an M1 Mac, I can't set this up using pipenv. I've had to install python 3.8 and tensorflow using miniforge.
+
+So you're on your own re requirements – sorry!
+
+## Comments
+
+This is a two player game, so I have modelled the opponent as part of the environment, and defined two environments:
+one where the AI agent goes first, and one where it goes second.
+
+The training starts by playing each agent against randomly chosen moves, and then bootstraps by playing each agent
+against the a frozen version of the other agent.
+
+I have arbitrarily chosen a single 27-node hidden layer for the neural network.
+It would be interesting to try other configurations.
+
+The saved players are pretty good, but definitely make mistakes.
 
 ## Play against the AI
 
@@ -15,7 +31,7 @@ Eg.
 Type "load" to load pre-trained agents, or "new" to train new ones: load
 Playing against themselves:
 ...
-Playing against you - you play first:
+Playing against you - you play second:
 Turn: 1
 •••  012
 •••  345

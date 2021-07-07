@@ -27,7 +27,7 @@ if __name__ == '__main__':
     play(env_1, agent_1)
     play(env_2, agent_2)
 
-    print("Playing against you - you play first:")
-    play_human(NacEnv, agent_1)
     print("Playing against you - you play second:")
+    play_human(NacEnv, agent_1)
+    print("Playing against you - you play first:")
     play_human(NacSecondPlayerEnv, agent_2)
