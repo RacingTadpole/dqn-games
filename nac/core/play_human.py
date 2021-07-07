@@ -4,6 +4,7 @@ from gym.core import Env
 from rl.core import Agent
 
 from nac.core.types import Board, Action
+from nac.core.env import MARKS
 
 def to_int(s: str) -> Optional[int]:
     """
@@ -19,8 +20,8 @@ def to_int(s: str) -> Optional[int]:
 
 
 def get_human_action(board: Board) -> Action:
-    # Annoying that render is part of env, and not a property of Board.
-    print("{}{}{}  012\n{}{}{}  345\n{}{}{}  678".format(*board.tolist()))
+    # Customise the render to show the position numbers.
+    print("{}{}{}  012\n{}{}{}  345\n{}{}{}  678".format(*[MARKS[x] for x in board.tolist()]))
     user_input = ''
     while to_int(user_input) is None:
         user_input = input('Which square number (0-8)? ')

@@ -81,7 +81,7 @@ def play(env: Env, agent: Agent) -> None:
     agent.training = False
     step = 0
     while not done:
-        print("Turn: {}".format(step))
+        print("Turn: {}".format(step + 1))
         processed_observation = agent.processor.process_observation(observation)
         action = agent.forward(processed_observation)
         observation, reward, done, info = env.step(action)

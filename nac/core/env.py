@@ -8,6 +8,7 @@ from gym.utils import seeding
 from .types import Action, Board
 
 
+MARKS = ['•', 'X', 'O']
 class NacEnv(Env):
     """
     Noughts and crosses.
@@ -76,17 +77,17 @@ class NacEnv(Env):
         >>> env.current_player
         0
         >>> env.render()
-        212
-        010
-        000
+        OXO
+        •X•
+        •••
         >>> env._can_other_player_win_next()
         False
         >>> for a in (8, 5):
         ...     _ = env.step(a)
         >>> env.render()
-        212
-        011
-        201
+        OXO
+        •XX
+        O•X
         >>> env._can_other_player_win_next()
         True
         >>> env.board = np.array([2, 1, 0, 2, 1, 1, 1, 2, 2])
@@ -111,9 +112,9 @@ class NacEnv(Env):
         False
         >>> _ = env.step(5)
         >>> env.render()
-        202
-        111
-        000
+        O•O
+        XXX
+        •••
         >>> env._has_current_player_won()
         True
         """
@@ -198,7 +199,7 @@ class NacEnv(Env):
         return self.board, reward, done, info
 
     def render(self, mode: str = "human"):
-        print("{}{}{}\n{}{}{}\n{}{}{}".format(*self.board.tolist()))
+        print("{}{}{}\n{}{}{}\n{}{}{}".format(*[MARKS[x] for x in self.board.tolist()]))
 
 
 class NacSecondPlayerEnv(NacEnv):
