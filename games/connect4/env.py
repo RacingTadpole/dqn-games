@@ -1,6 +1,6 @@
 # The encoding of the board is based on
 # https://github.com/mahowald/tictactoe/blob/master/tictactoe/env.py
-from typing import Callable, Literal, Tuple
+from typing import Callable, Literal, Tuple, Generator, List
 import numpy as np
 from gym import spaces, Env
 from gym.utils import seeding
@@ -12,7 +12,7 @@ HEIGHT = 6
 NUM_POSITIONS = WIDTH * HEIGHT
 MARKS = ['•', 'X', 'O']
 
-def winning_combos():
+def winning_combos() -> Generator[List[int], None, None]:
     """
     >>> len(list(winning_combos()))
     69
@@ -139,7 +139,7 @@ class Connect4Env(Env):
 
     def _is_board_full_next(self) -> bool:
         return (self.board != 0).sum() >= NUM_POSITIONS - 1
-    
+
     def drop_chip(self, action: Action) -> None:
         """
         >>> env = Connect4Env()

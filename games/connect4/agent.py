@@ -5,7 +5,7 @@ from tensorflow.keras.optimizers import Adam
 
 from rl.agents.dqn import DQNAgent
 from rl.core import Agent
-from rl.policy import BoltzmannQPolicy, EpsGreedyQPolicy
+from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
 from gym import Env
@@ -33,7 +33,7 @@ def get_dqn_agent(env: Env) -> Agent:
 
     memory = SequentialMemory(limit=50000, window_length=1)
     training_policy = EpsGreedyQPolicy(eps=0.2)
-    test_policy = BoltzmannQPolicy()
+    # test_policy = BoltzmannQPolicy()
     processor = Connect4Processor()
     dqn = DQNAgent(model=model,
                    processor=processor,
@@ -41,8 +41,7 @@ def get_dqn_agent(env: Env) -> Agent:
                    memory=memory,
                    nb_steps_warmup=100,
                    target_model_update=1e-2,
-                   policy=training_policy,
-                   test_policy=test_policy)
+                   policy=training_policy)
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
     return dqn
 
@@ -54,9 +53,8 @@ def train_agent(env: Env, agent: Agent, steps: int = 10000) -> Agent:
 
 def train_against(trainee: Agent, trainee_env: Type[Env], opponent: Agent, steps: int = 10000) -> Env:
     trainee.training = True
-    opponent.training = False
-    # Comment the next line as we now use a test_policy (ie. when not in training) with some randomness.
-    # opponent.training = True  # So that it still takes random choices occasionally when played against.
+    # opponent.training = False  # Can set it to False if using a probabilistic test_policy (eg. Boltzmann)
+    opponent.training = True  # So that it still takes random choices occasionally when played against.
     env = trainee_env(get_opponent_action=lambda board: opponent.forward(opponent.processor.process_observation(board)))
     train_agent(env, trainee, steps)
     return env
@@ -75,8 +73,8 @@ def load_agents(path_base: str) -> Tuple[Agent, Env, Agent, Env]:
 
 def save_agents(path_base: str, agent1: Agent, agent2: Agent) -> None:
     path_ext = '.hdf5'
-    agent1.save_weights(f'{path_base}-1{path_ext}')
-    agent2.save_weights(f'{path_base}-2{path_ext}')
+    agent1.save_weights(f'{path_base}-1{path_ext}', overwrite=True)
+    agent2.save_weights(f'{path_base}-2{path_ext}', overwrite=True)
 
 
 def play(env: Env, agent: Agent) -> None:

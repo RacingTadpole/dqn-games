@@ -65,14 +65,17 @@ Your choice? """)
             env_2 = train_against(agent_2, Connect4SecondPlayerEnv, agent_1)
             play(env_2, agent_2)
 
-        print('Saving weights for trained agents')
-        save_agents(os.path.join(SCRIPT_PATH, 'weights', 'temp'), agent_1, agent_2)
+            print('Saving weights for trained agents (as temp)')
+            save_agents(os.path.join(SCRIPT_PATH, 'weights', 'temp'), agent_1, agent_2)
 
     print("Play against themselves:")
     play(env_1, agent_1)
     play(env_2, agent_2)
 
-    print("Play against you - you play first:")
-    play_human(Connect4SecondPlayerEnv, agent_2)
-    print("Play against you - you play second:")
-    play_human(Connect4Env, agent_1)
+    AGAIN = 'yes'
+    while AGAIN.lower() != 'no':
+        print("Play against you - you play first:")
+        play_human(Connect4SecondPlayerEnv, agent_2)
+        print("Play against you - you play second:")
+        play_human(Connect4Env, agent_1)
+        AGAIN = input('Play again ("no" to end)? ')

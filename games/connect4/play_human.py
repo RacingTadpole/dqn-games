@@ -26,7 +26,7 @@ def get_human_action(board: Board) -> Action:
         print(*[MARKS[x] for x in board[row * WIDTH: (row + 1) * WIDTH].tolist()])
 
     user_input = ''
-    while to_int(user_input) is None:
+    while to_int(user_input) is None or to_int(user_input) > WIDTH - 1:
         user_input = input(f'Which column (0-{WIDTH - 1})? ')
         if user_input == '':
             sys.exit()
