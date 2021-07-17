@@ -1,7 +1,7 @@
 import numpy as np
 from rl.processors import Processor
 
-from nac.core.types import BoardForDqn, Board
+from games.nac.types import BoardForDqn, Board
 
 
 class NacProcessor(Processor):

@@ -3,8 +3,8 @@ from typing import Optional, Type
 from gym.core import Env
 from rl.core import Agent
 
-from nac.core.types import Board, Action
-from nac.core.env import MARKS
+from games.nac.types import Board, Action
+from games.nac.env import MARKS
 
 def to_int(s: str) -> Optional[int]:
     """

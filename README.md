@@ -1,11 +1,14 @@
-# Tic-tac-toe (aka. noughts and crosses)
-With Deep Q (DQN) reinforcement learning using gym and keras-rl
+# Reinforcement learning games
+
+Some games with Deep Q (DQN) reinforcement learning, using gym and keras-rl.
 
 ## Pre-requisites
 
 Because I'm using an M1 Mac, I can't set this up using pipenv. I've had to install python 3.8 and tensorflow using miniforge.
 
 So you're on your own re requirements – sorry!
+
+## Tic-tac-toe (aka. noughts and crosses)
 
 ## Comments
 
@@ -23,7 +26,7 @@ The saved players are pretty good, but definitely make mistakes.
 ## Play against the AI
 
 ```
-python -m nac.play
+python -m games.nac.play
 ```
 
 Eg.

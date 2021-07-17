@@ -10,8 +10,8 @@ from rl.memory import SequentialMemory
 
 from gym import Env
 
-from nac.core.env import NacEnv, NacSecondPlayerEnv
-from nac.core.processor import NacProcessor
+from games.nac.env import NacEnv, NacSecondPlayerEnv
+from games.nac.processor import NacProcessor
 
 
 def get_dqn_agent(env: Env) -> Agent:
@@ -45,7 +45,7 @@ def get_dqn_agent(env: Env) -> Agent:
     return dqn
 
 
-def train_agent(env: Env, agent: Agent, steps: int = 5000) -> Agent:
+def train_agent(env: Env, agent: Agent, steps: int = 10000) -> Agent:
     agent.fit(env, nb_steps=steps, visualize=False, verbose=1)
     return agent
 
