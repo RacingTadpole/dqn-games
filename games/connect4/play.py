@@ -1,9 +1,17 @@
 import os
 from games.connect4.env import Connect4Env, Connect4SecondPlayerEnv
-from games.connect4.agent import train_against, train_agent, load_agents, get_dqn_agent, play, save_agents
+from games.connect4.agent import train_against, train_agent, load_agents, get_dqn_agent, play, save_agents, test
 from games.connect4.play_human import play_human
+# from tensorflow.python.framework.ops import disable_eager_execution
+# from tensorflow.python.compiler.mlcompute import set_mlc_device
 
 if __name__ == '__main__':
+    # As suggested by https://github.com/apple/tensorflow_macos/issues/268
+    # Note this uses the GPU but is actually slightly slower than with CPU.
+    # disable_eager_execution()
+    # set_mlc_device(device_name='gpu')
+
+    DEFAULT_WEIGHT_FILE_NAME = 'temp'
     SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
     WORDS = ['']
     while WORDS[0] not in ('load', 'new', 'improve'):
@@ -61,12 +69,15 @@ Your choice? """)
             print('Training player 1')
             env_1 = train_against(agent_1, Connect4Env, agent_2)
             play(env_1, agent_1)
+            test(env_1, agent_1)
+            print(f'Round {i + 1} of {ROUNDS}')
             print('Training player 2')
             env_2 = train_against(agent_2, Connect4SecondPlayerEnv, agent_1)
             play(env_2, agent_2)
+            test(env_2, agent_2)
 
-            print('Saving weights for trained agents (as temp)')
-            save_agents(os.path.join(SCRIPT_PATH, 'weights', 'temp'), agent_1, agent_2)
+            print(f'Saving weights for trained agents (as {DEFAULT_WEIGHT_FILE_NAME})')
+            save_agents(os.path.join(SCRIPT_PATH, 'weights', DEFAULT_WEIGHT_FILE_NAME), agent_1, agent_2)
 
     print("Play against themselves:")
     play(env_1, agent_1)

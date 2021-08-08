@@ -219,7 +219,7 @@ class Connect4Env(Env):
 
         # check if the board is full now or on the next turn, which is a tie.
         elif self._is_board_full_next():
-            reward = 0
+            reward = 0.5
             info = {
                 "state": "done",
                 "reason": "Players have tied (or are about to)",
