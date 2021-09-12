@@ -7,13 +7,18 @@ if __name__ == '__main__':
     SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
     WORDS = ['']
     while WORDS[0] not in ('load', 'new'):
-        WORD = input('Type "load NAME" to load pre-trained agents from the named file (eg. "load weights"), or "new X" to train new agents over X rounds (eg. "new 20"): ')
+        WORD = input("""
+Type:
+    - "load NAME" to load pre-trained agents from the named file (eg. "load weights"), or
+    - "new X" to train new agents over X rounds (eg. "new 20")
+Your choice? """)
         WORDS = WORD.split(' ')
+
     if WORDS[0] == 'load':
         FILENAME = 'weights'
         try:
             FILENAME = WORDS[1]
-        except (IndexError):
+        except IndexError:
             pass
         agent_1, env_1, agent_2, env_2 = load_agents(os.path.join(SCRIPT_PATH, 'weights', FILENAME))
     else:
