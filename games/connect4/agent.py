@@ -5,35 +5,36 @@ from tensorflow.keras.optimizers import Adam
 
 from rl.agents.dqn import DQNAgent
 from rl.core import Agent
-from rl.policy import EpsGreedyQPolicy
+from rl.policy import MaxBoltzmannQPolicy, BoltzmannQPolicy
 from rl.memory import SequentialMemory
 
 from gym import Env
 
-from games.connect4.env import Connect4Env, Connect4SecondPlayerEnv, winning_combos
+from games.connect4.env import Connect4Env, Connect4SecondPlayerEnv
 from games.connect4.processor import Connect4Processor
 
+LAYER_SIZE = 69  # len(list(winning_combos())) = 69
 
 def get_dqn_agent(env: Env) -> Agent:
     """
     >>> env = Connect4Env()
     >>> agent = get_dqn_agent(env)
     >>> agent.layers[1].weights[0].shape
-    TensorShape([42, 69])
+    TensorShape([42, LAYER_SIZE])
     >>> agent.layers[2].weights[0].shape
-    TensorShape([69, 6])
+    TensorShape([LAYER_SIZE, 6])
     """
     nb_actions = env.action_space.n
 
     model = Sequential([
         Flatten(input_shape=(1,) + env.observation_space.shape),
-        Dense(len(list(winning_combos())), activation='relu'),
+        Dense(LAYER_SIZE, activation='relu'),
         Dense(nb_actions, activation='linear'),
     ])
 
     memory = SequentialMemory(limit=50000, window_length=1)
-    training_policy = EpsGreedyQPolicy(eps=0.2)  # I had this at 0.06 for the current training!
-    # test_policy = BoltzmannQPolicy()
+    training_policy = MaxBoltzmannQPolicy(eps=0.2)  # EpsGreedyQPolicy(eps=0.2)
+    test_policy = BoltzmannQPolicy()
     processor = Connect4Processor()
     dqn = DQNAgent(model=model,
                    processor=processor,
@@ -41,7 +42,8 @@ def get_dqn_agent(env: Env) -> Agent:
                    memory=memory,
                    nb_steps_warmup=100,
                    target_model_update=1e-2,
-                   policy=training_policy)
+                   policy=training_policy,
+                   test_policy=test_policy)
     # https://keras.io/examples/rl/deep_q_network_breakout/#train says
     # Adam optimizer improves training time over RMSProp (for breakout game)
     # They also use clipnorm=1.0. Might be worth a try.
@@ -109,5 +111,5 @@ def test(env: Env, agent: Agent, nb_episodes=250) -> None:
     test_history = agent.test(env, nb_episodes=nb_episodes, visualize=False, verbose=False).history
     test_scores = test_history['episode_reward']
     test_lengths = test_history['nb_steps']
-    print(f'On {nb_episodes} games, average score  {sum(test_scores)/len(test_scores)}')
-    print(f'On {nb_episodes} games, average length {sum(test_lengths)/len(test_lengths)}\n')
+    print(f'On {nb_episodes} games, average score  {sum(test_scores)/len(test_scores)}, range {min(test_scores)} - {max(test_scores)}')
+    print(f'On {nb_episodes} games, average length {sum(test_lengths)/len(test_lengths)}, range {min(test_lengths)} - {max(test_lengths)}\n')

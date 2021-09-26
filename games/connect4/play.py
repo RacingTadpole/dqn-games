@@ -56,10 +56,8 @@ Your choice? """)
         print(f'Round 1 of {ROUNDS} (against random legal actions)')
         print('Training player 1')
         agent_1 = train_agent(env_1, agent_1)
-        play(env_1, agent_1)
         print('Training player 2')
         agent_2 = train_agent(env_2, agent_2)
-        play(env_2, agent_2)
         INITIAL = 1
 
     if WORDS[0] in ('improve', 'new'):
@@ -68,12 +66,10 @@ Your choice? """)
             print(f'Round {i + 1} of {ROUNDS}')
             print('Training player 1')
             env_1 = train_against(agent_1, Connect4Env, agent_2)
-            play(env_1, agent_1)
             test(env_1, agent_1)
             print(f'Round {i + 1} of {ROUNDS}')
             print('Training player 2')
             env_2 = train_against(agent_2, Connect4SecondPlayerEnv, agent_1)
-            play(env_2, agent_2)
             test(env_2, agent_2)
 
             print(f'Saving weights for trained agents (as {DEFAULT_WEIGHT_FILE_NAME})')
