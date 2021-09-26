@@ -4,9 +4,26 @@ Some games with Deep Q (DQN) reinforcement learning, using gym and keras-rl.
 
 ## Pre-requisites
 
-Because I'm using an M1 Mac, I can't set this up using pipenv. I've had to install python 3.8 and tensorflow using miniforge.
+Because I'm using an M1 Mac, I can't set this up using pipenv. I've had to install python 3.8 and tensorflow using miniforge, with (not reconfirmed):
 
-So you're on your own re requirements – sorry!
+```
+brew install miniforge
+conda env create --file=environment.yml --name tf_m1
+conda init tf_m1
+conda activate tf_m1
+pip install --upgrade --force --no-dependencies https://github.com/apple/tensorflow_macos/releases/download/v0.1alpha3/tensorflow_addons_macos-0.1a3-cp38-cp38-macosx_11_0_arm64.whl https://github.com/apple/tensorflow_macos/releases/download/v0.1alpha3/tensorflow_macos-0.1a3-cp38-cp38-macosx_11_0_arm64.whl
+conda install -c conda-forge tqdm
+conda install -c conda-forge mypy
+conda install -c conda-forge pytest
+conda install -c conda-forge pylint
+pip install keras-rl "gym[atari]"
+```
+
+Then to enter the correct environment, use 
+
+```
+conda activate tf_m1
+```
 
 ## Tic-tac-toe (aka. noughts and crosses)
 
