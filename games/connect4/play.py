@@ -62,14 +62,22 @@ Your choice? """)
 
     if WORDS[0] in ('improve', 'new'):
         for i in range(INITIAL, ROUNDS):
+            old_env_1 = env_1
+            old_env_2 = env_2
             print()
             print(f'Round {i + 1} of {ROUNDS}')
             print('Training player 1')
             env_1 = train_against(agent_1, Connect4Env, agent_2)
+            print('Testing against previous player 2')
+            test(old_env_1, agent_1)
+            print('Testing against latest player 2')
             test(env_1, agent_1)
             print(f'Round {i + 1} of {ROUNDS}')
             print('Training player 2')
             env_2 = train_against(agent_2, Connect4SecondPlayerEnv, agent_1)
+            print('Testing against previous player 1')
+            test(old_env_2, agent_2)
+            print('Testing against latest player 1')
             test(env_2, agent_2)
 
             print(f'Saving weights for trained agents (as {DEFAULT_WEIGHT_FILE_NAME})')

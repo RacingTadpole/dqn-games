@@ -230,11 +230,16 @@ class Connect4Env(Env):
         if not done:
             self.current_player = 1 - self.current_player
             opponent_action = self.get_opponent_action(self.board)
-            while not self._is_legal(opponent_action):
-                opponent_action = self.get_opponent_action(self.board)
-            self.drop_chip(opponent_action)
-            # And return to the original player's turn.
-            self.current_player = 1 - self.current_player
+            counter = 0
+            while not self._is_legal(opponent_action) and counter < 100:
+                opponent_action = self.get_opponent_action(self.board) if counter < 25 else self.action_space.sample()
+                counter += 1
+            if counter == 100:
+                done = True
+            else:
+                self.drop_chip(opponent_action)
+                # And return to the original player's turn.
+                self.current_player = 1 - self.current_player
 
         return self.board, reward, done, info
 

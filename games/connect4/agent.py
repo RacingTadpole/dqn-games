@@ -13,7 +13,7 @@ from gym import Env
 from games.connect4.env import Connect4Env, Connect4SecondPlayerEnv
 from games.connect4.processor import Connect4Processor
 
-LAYER_SIZE = 69  # len(list(winning_combos())) = 69
+LAYER_SIZE = 69 * 2  # len(list(winning_combos())) = 69
 
 def get_dqn_agent(env: Env) -> Agent:
     """
@@ -33,8 +33,8 @@ def get_dqn_agent(env: Env) -> Agent:
     ])
 
     memory = SequentialMemory(limit=50000, window_length=1)
-    training_policy = MaxBoltzmannQPolicy(eps=0.2)  # EpsGreedyQPolicy(eps=0.2)
-    test_policy = BoltzmannQPolicy()
+    training_policy = MaxBoltzmannQPolicy(eps=0.15, tau=1)  # EpsGreedyQPolicy(eps=0.2)
+    test_policy = BoltzmannQPolicy(tau=1)
     processor = Connect4Processor()
     dqn = DQNAgent(model=model,
                    processor=processor,
@@ -111,5 +111,5 @@ def test(env: Env, agent: Agent, nb_episodes=250) -> None:
     test_history = agent.test(env, nb_episodes=nb_episodes, visualize=False, verbose=False).history
     test_scores = test_history['episode_reward']
     test_lengths = test_history['nb_steps']
-    print(f'On {nb_episodes} games, average score  {sum(test_scores)/len(test_scores)}, range {min(test_scores)} - {max(test_scores)}')
-    print(f'On {nb_episodes} games, average length {sum(test_lengths)/len(test_lengths)}, range {min(test_lengths)} - {max(test_lengths)}\n')
+    print(f'  over {nb_episodes} games, average score  {sum(test_scores)/len(test_scores)}, range {min(test_scores)} - {max(test_scores)}')
+    print(f'  over {nb_episodes} games, average length {sum(test_lengths)/len(test_lengths)}, range {min(test_lengths)} - {max(test_lengths)}\n')
